@@ -1,0 +1,18 @@
+{
+  "name": "plants-soil-moisture",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tamara-dimeska/plants-soil-moisture.git"
+  },
+  "author": "Tamara Dimeska",
+  "bugs": {
+    "url": "https://github.com/tamara-dimeska/plants-soil-moisture/issues"
+  },
+  "homepage": "https://github.com/tamara-dimeska/plants-soil-moisture#readme",
+  "devDependencies": {
+    "@sendgrid/mail": "^7.4.0",
+    "date-fns": "^2.16.1",
+    "serialport": "^9.0.4"
+  }
+}
