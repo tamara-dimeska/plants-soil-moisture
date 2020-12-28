@@ -10,9 +10,13 @@
     "url": "https://github.com/tamara-dimeska/plants-soil-moisture/issues"
   },
   "homepage": "https://github.com/tamara-dimeska/plants-soil-moisture#readme",
+  "scripts": {
+    "start": "npm install && node index.js"
+  },
   "devDependencies": {
     "@sendgrid/mail": "^7.4.0",
     "date-fns": "^2.16.1",
+    "prettier": "^2.2.1",
     "serialport": "^9.0.4"
   }
 }

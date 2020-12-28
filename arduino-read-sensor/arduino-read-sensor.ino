@@ -5,6 +5,10 @@ void setup() {
 }
 
 void loop() {
+  /**
+   * A0 is the analog pin on the Arduino Board that the AOUT of the sensor is connected to. 
+   * If you are using another analog pin, change read pin.
+   */
   soilMoistureReadValue = analogRead(A0);
   Serial.println(soilMoistureReadValue);
 
