@@ -14,10 +14,9 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 const port = new SerialPort('/dev/ttyACM0', { baudRate: 9600 });
 // The data is send from the Arduino to the serial port with `Serial.println()`, that why the delimiter is '\n'.
 const parser = port.pipe(new Readline({ delimiter: '\n' }));
-const airValue = 810; // Change this value to the value read when your sensor is on air
-const waterValue = 420; // Change this value to the value read when your sensor is in water
+const airValue = 818; // Change this value to the value read when your sensor is on air
+const waterValue = 428; // Change this value to the value read when your sensor is in water
 const offset = (airValue - waterValue) / 3;
-var read_value;
 var sensor_message;
 
 // Read the port data
@@ -26,8 +25,7 @@ port.on('open', () => {
 });
 
 parser.on('data', (data) => {
-  read_value = data;
-
+  data = 512;
   if (data < waterValue) {
     sensor_message =
       'You passed the water limit. Consider recalibrating the sensor.';
@@ -51,7 +49,7 @@ parser.on('data', (data) => {
       startOfToday(),
       'dd MMM yyyy'
     )}`,
-    text: `The sensor reading is ${read_value}. The plant's soil is: ${sensor_message}`,
+    text: `The sensor reading is ${data}. The plant's soil is: ${sensor_message}`,
   };
 
   (async () => {
