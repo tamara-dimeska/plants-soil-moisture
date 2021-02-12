@@ -14,32 +14,46 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 const port = new SerialPort('/dev/ttyACM0', { baudRate: 9600 });
 // The data is send from the Arduino to the serial port with `Serial.println()`, that why the delimiter is '\n'.
 const parser = port.pipe(new Readline({ delimiter: '\n' }));
-const airValue = 818; // Change this value to the value read when your sensor is on air
-const waterValue = 428; // Change this value to the value read when your sensor is in water
+const airValue = 807; // Change this value to the value read when your sensor is on air
+const waterValue = 512; // Change this value to the value read when your sensor is in water
 const offset = (airValue - waterValue) / 3;
-var sensor_message;
+let sensor_message;
+let reminder = 0;
+let email_body;
 
 // Read the port data
 port.on('open', () => {
   console.log('Serial port open...');
 });
 
-parser.on('data', (data) => {
-  data = 512;
-  if (data < waterValue) {
+parser.on('data', (sensor_data) => {
+  if (sensor_data < waterValue) {
     sensor_message =
       'You passed the water limit. Consider recalibrating the sensor.';
-  } else if (data > airValue) {
+  } else if (sensor_data > airValue) {
     sensor_message =
       'You passed the air limit. Consider recalibrating the sensor.';
   }
 
-  if (data > waterValue && data < waterValue + offset) {
+  if (sensor_data > waterValue && sensor_data < waterValue + offset) {
     sensor_message = 'Very Wet';
-  } else if (data > waterValue + offset && data < airValue - offset) {
+  } else if (
+    sensor_data > waterValue + offset &&
+    sensor_data < airValue - offset
+  ) {
+    reminder++;
     sensor_message = 'Wet';
-  } else if (data < airValue && data > airValue - offset) {
+  } else if (sensor_data < airValue && sensor_data > airValue - offset) {
     sensor_message = 'Dry';
+  }
+
+  const text = `The sensor reading is ${sensor_data}. The plant's soil is: ${sensor_message}`;
+
+  if (reminder === 2) {
+    email_body = `${text}\nREMINDER: Today is the day! Water your plants!`;
+    reminder = 0;
+  } else {
+    email_body = text;
   }
 
   const msg = {
@@ -49,7 +63,7 @@ parser.on('data', (data) => {
       startOfToday(),
       'dd MMM yyyy'
     )}`,
-    text: `The sensor reading is ${data}. The plant's soil is: ${sensor_message}`,
+    text: email_body,
   };
 
   (async () => {

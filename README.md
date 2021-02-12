@@ -1,6 +1,6 @@
 # plants-soil-moisture
 
-The goal of this project is to measure the moisture of the plants soil and send daily emails about it, so that once the plant is dry, you can go and water the plant.
+The goal of this project is to measure the moisture of the plants soil and send daily emails about it, so that once the plants soil is dry, you can go and water the plant. My specific plants (succulents), need watering after 14 days of the soil being dry, so there is an additional reminder (logic) for this. You can adjust this logic and/or just remove it.
 
 ## Electronics
 
