@@ -41,15 +41,15 @@ parser.on('data', (sensor_data) => {
     sensor_data > waterValue + offset &&
     sensor_data < airValue - offset
   ) {
-    reminder++;
     sensor_message = 'Wet';
   } else if (sensor_data < airValue && sensor_data > airValue - offset) {
+    reminder++;
     sensor_message = 'Dry';
   }
 
   const text = `The sensor reading is ${sensor_data}. The plant's soil is: ${sensor_message}`;
 
-  if (reminder === 2) {
+  if (reminder === 14) {
     email_body = `${text}\nREMINDER: Today is the day! Water your plants!`;
     reminder = 0;
   } else {
